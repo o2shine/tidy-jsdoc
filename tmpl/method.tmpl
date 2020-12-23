@@ -9,8 +9,7 @@ if (data.summary && data.summary[data.summary.length-1] === '.') {
 
 var removeTrailingHTMLTag = /<\/[A-z0-9]+>$/
 var hasMethodSummary = (data.kind !== 'class')
-    && data.summary
-    && !data.description.includes(data.summary.replace(removeTrailingHTMLTag, ''));
+    && data.summary && !(data.description && data.description.includes(data.summary.replace(removeTrailingHTMLTag, '')));
 ?>
 
 <?js if (data.kind !== 'module' && data.kind !== 'class' ) { ?>
@@ -30,7 +29,7 @@ var hasMethodSummary = (data.kind !== 'class')
     <?js } ?>
 
 
-    <?js if (data.kind === 'class' && data.classdesc) { ?>
+    <?js if (data.kind === 'class' && data.classdesc && !data.hideconstructor) { ?>
     <h3 class="subtitle">Constructor</h3>
     <?js } ?>
 
@@ -38,13 +37,15 @@ var hasMethodSummary = (data.kind !== 'class')
     <?js= data.attribs ?>
     </div>
 
+    <?js if (!data.hideconstructor) { ?>
     <h4 class="method-name" id="<?js= id ?>"><?js= (kind === 'class' ? 'new ' : '') +
     name + (data.signature || '') ?>
     </h4>
+    <?js } ?>
 <?js } ?>
 
 <?js if (hasMethodSummary) { ?>
-    <h4 class="method-heading">Summary</h4>
+    <h4 class="method-heading" style="display:none;">Summary</h4>
     <?js= data.summary ?>
 <?js } ?>
 
@@ -86,7 +87,7 @@ var hasMethodSummary = (data.kind !== 'class')
     <ul>
     <?js data.returns.forEach(function(r) { ?>
         <li class="method-returns">
-            <?js r.type.names.forEach(function(t) { ?>
+            <?js ( (r.type && r.type.names) ? r.type.names : [] ).forEach(function(t) { ?>
                 <code><?js= self.htmlsafe(t) ?></code>
             <?js }); ?>
             <?js if (r.description) { ?>

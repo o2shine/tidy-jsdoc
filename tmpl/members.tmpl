@@ -9,7 +9,7 @@ if (data.summary) {
        ? data.summary.slice(0,-1)
        : data.summary
 
-    var hasSummary = data.summary && !data.description.includes(cleanSummary.replace(removeTrailingHTMLTag, ''));
+    var hasSummary = data.summary && !(data.description && data.description.includes(cleanSummary.replace(removeTrailingHTMLTag, '')));
 }
 ?>
 

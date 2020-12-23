@@ -1,18 +1,18 @@
 {
-  "name": "tidy-jsdoc",
-  "version": "1.4.0",
-  "author": "Julie Ng <hello@julie.io>",
+  "name": "tidy-jsdoc-o2",
+  "version": "0.0.1",
+  "author": "o2group <22236703@qq.com>",
   "license": "Apache-2.0",
   "description": "A clean JSDoc3 template",
   "repository": {
     "type": "git",
-    "url": "https://github.com/julie-ng/tidy-jsdoc.git"
+    "url": "git+https://github.com/o2shine/tidy-jsdoc-o2.git"
   },
   "keywords": [
     "jsdoc",
     "template"
   ],
-  "homepage": "https://github.com/julie-ng/tidy-jsdoc",
+  "homepage": "https://github.com/o2shine/tidy-jsdoc-o2",
   "scripts": {
     "release": "standard-version --sign",
     "sass": "gulp sass",
@@ -31,5 +31,9 @@
     "marked": "^0.7.0",
     "standard-version": "^9.0.0",
     "tar": " >=4.4.2"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/o2shine/tidy-jsdoc-o2/issues"
+  },
+  "main": "gulpfile.js"
 }

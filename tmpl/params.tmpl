@@ -97,7 +97,7 @@
                 <?js } ?>
             <?js } ?>
 
-            <div class="param-description"><?js= param.description ?></div>
+            <span class="param-description"><?js= param.description ?></span>
             <?js if (param.subparams) { ?>
                 <p class="param-properties">Properties</p>
                 <?js= self.partial('params.tmpl', param.subparams) ?>

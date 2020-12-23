@@ -75,11 +75,11 @@
             </span>
         <?js } ?>
 
-        <div class="param-description">
+        <span class="param-description">
             <?js= prop.description ?><?js if (prop.subprops) { ?>
                 <h4 class="method-heading">Properties</h4><?js= self.partial('properties.tmpl', prop) ?>
             <?js } ?>
-        </div>
+        </span>
 
     </li>
     <?js }); ?>

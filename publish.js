@@ -46,7 +46,7 @@ function needsSignature(doclet) {
     var needsSig = false;
 
     // function and class definitions always get a signature
-    if (doclet.kind === 'function' || doclet.kind === 'class') {
+    if ((doclet.kind === 'function' || doclet.kind === 'class') && !doclet.hideconstructor) {
         needsSig = true;
     }
     // typedefs that contain functions get a signature, too
@@ -300,15 +300,19 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
 
     conf.default = conf.default || {}
 
-    if (items && items.length) {
-        var itemsNav = ""
+    if (items && items.length) { //classes
 
-        nav.push(buildNavHeading(itemHeading))
+        // var itemsNav = "";
+        //
+        // nav.push(buildNavHeading(itemHeading))
 
-        items.forEach(function (item) {
-            var methods = find({ kind: "function", memberof: item.longname })
-            var members = find({ kind: "member", memberof: item.longname })
-            var events = find({ kind: "event", memberof: item.longname })
+        // items.forEach(function (item) {
+        var _buildMemberNav = function(item) {
+            nav.push("<ul class='nav-content' style='padding: 0px;margin: 0px 0px 0px 10px;'>")
+
+            var methods = find({kind: "function", memberof: item.longname})
+            var members = find({kind: "member", memberof: item.longname})
+            var events = find({kind: "event", memberof: item.longname})
             var displayName
 
             if (!hasOwnProp.call(item, "longname")) {
@@ -339,6 +343,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
                     nav.push(buildNavHeading(buildNavType(item.kind, linktoFn(item.longname, displayName))))
                 }
 
+                nav.push("<ul class='nav-sub-content' style='padding: 0px;margin: 0px;'>")
                 if (members.length) {
                     members.forEach(function (member) {
                         if (member.inherited && conf.showInheritedInNav === false) {
@@ -365,10 +370,83 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
                         nav.push(buildNavItem(buildNavType(event.kind, linkto(event.longname, event.name))))
                     })
                 }
+                nav.push("</ul>")
 
-                itemsSeen[item.longname] = true
+                // itemsSeen[item.longname] = true
             }
-        })
+
+            nav.push("</ul>")
+
+        }
+        // })
+
+        var map = { "$items" : [] };
+        /*
+       map = {
+         "$items": [],
+         "component": {
+           "$items": [],
+           "process": {
+             "$items": []
+           },
+           "cms": {
+             "$items": []
+           },
+           "portal": {
+             "$items": []
+           }
+         }
+       }
+       */
+        items.forEach(function (item) {
+            var flag = true;
+            if( item.tags ){
+                item.tags.forEach( function (tag) {
+                    if( tag.title === "category" && tag.value ){
+                        //value=component.process|component.cms|component.portal
+                        flag = false;
+
+                        tag.value.split("|").forEach( function (category) {
+                            //category[0]=component.process
+                            var object = map;
+                            category.split(".").forEach( function ( path ) {
+                                //path[0]=component;
+
+                                if( !object[path] ){
+                                    object[path] = { "$items" : [] };
+                                }
+                                object = object[path];
+
+                            })
+                            object.$items.push( item );
+                        })
+                    }
+                })
+            }
+            if( flag ){
+                map.$items.push( item );
+            }
+            // console.log( JSON.stringify(map) )
+        });
+
+
+        var buildNavCategoy = function ( key, categoryMap ) {
+            if(key)nav.push( "<li class='nav-category'>"+key+"</li>" )
+            if(key)nav.push( "<ul class='nav-category-content' style='margin-left: 10px; '>" )
+            categoryMap.$items.forEach( function (item) {
+                _buildMemberNav(item)
+            })
+            for( var key in categoryMap ){
+                if( key !== "$items" )buildNavCategoy( key, categoryMap[key] )
+            }
+            if(key)nav.push( "</ul>" )
+        }
+
+        var itemsNav = "";
+
+        nav.push(buildNavHeading(itemHeading))
+
+        buildNavCategoy( "", map );
     }
 
     if (nav.length > 0) {
@@ -411,8 +489,8 @@ function buildNav(members) {
     // console.log(members.events);
 
     nav = nav.concat(buildMemberNav(members.tutorials, "Tutorials", seenTutorials, linktoTutorial));
-    nav = nav.concat(buildMemberNav(members.classes, "Classes", seen, linkto));
     nav = nav.concat(buildMemberNav(members.modules, "Modules", {}, linkto));
+    nav = nav.concat(buildMemberNav(members.classes, "Classes", seen, linkto));
     nav = nav.concat(buildMemberNav(members.externals, "Externals", seen, linktoExternal));
     nav = nav.concat(buildMemberNav(members.namespaces, "Namespaces", seen, linkto));
     nav = nav.concat(buildMemberNav(members.mixins, "Mixins", seen, linkto));

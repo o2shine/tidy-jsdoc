@@ -3,7 +3,7 @@
   --secondary-color: #107e7d;
   --link-color: var(--primary-color);
   --link-hover-color: var(--primary-color);
-  --border-color: #eee;
+  --border-color: #ddd;
   --code-color: #666;
   --code-attention-color: #ca2d00;
   --text-color: #4a4a4a;
@@ -38,7 +38,7 @@
   --nav-type-module-bg: #f2e4f7;
   --nav-type-event-color: #948b34;
   --nav-type-event-bg: #fff6a6;
-  --max-content-width: 900px;
+  --max-content-width: 1200px;
   --nav-width: 320px;
   --padding-unit: 30px;
   --layout-footer-color: #aaa;
@@ -139,8 +139,8 @@ code {
     .layout-nav li.nav-heading:first-child {
       display: var(--nav-heading-display);
       margin-left: 0;
-      margin-bottom: 1em;
-      text-transform: uppercase;
+      margin-bottom: 0.5em;
+      /*text-transform: uppercase;*/
       color: var(--nav-heading-color);
       font-size: 0.85em; }
   .layout-nav a {
@@ -152,7 +152,7 @@ code {
   max-width: none; }
 
 .nav-heading {
-  margin-top: 1em;
+  margin-top: 0.5em;
   font-weight: 500; }
   .nav-heading a {
     color: var(--nav-link-color); }
@@ -160,6 +160,17 @@ code {
       color: var(--nav-link-color); }
   .nav-heading .nav-item-type {
     font-size: 0.9em; }
+
+ .nav-item{
+   padding-left: 10px;
+ }
+
+ .nav-category{
+   padding-left: 10px;
+   color : #aaa;
+   font-size: 0.5em;
+
+ }
 
 .nav-item-type {
   display: inline-block;
@@ -202,6 +213,15 @@ code {
 .nav-item-name.is-class {
   font-size: 1.1em; }
 
+.nav-content {
+  margin-left: 5px;
+  padding: 0px;
+}
+
+.nav-sub-content{
+  display: none;
+}
+
 .layout-footer {
   padding-top: 2rem;
   padding-bottom: 2rem;
@@ -227,7 +247,8 @@ h5 {
   margin: 0 0 -0.5em;
   font-weight: 400;
   color: var(--light-font-color);
-  text-transform: uppercase; }
+  /*text-transform: uppercase; */
+}
 
 .page-title {
   margin-top: 0; }
@@ -314,6 +335,10 @@ table {
 .readme h3 {
   margin: 2rem 0 1rem 0; }
 
+.param-description p{
+  display: inline-block;
+}
+
 article.event, article.member, article.method {
   padding: 1em 0 1em;
   margin: 1em 0;
@@ -329,17 +354,17 @@ article.event, article.member, article.method {
   margin: 0 0.75em 0 0; }
 
 .method-heading {
-  margin: 1em 0; }
+  margin: 1em 0 0 0; }
 
 li.method-returns,
 .method-params li {
-  margin-bottom: 1em; }
+  margin-bottom: 0.1em; }
 
 .method-source a:link, .method-source a:visited {
   color: var(--light-font-color); }
 
 .method-returns p {
-  margin: 0; }
+  margin: 0; display: inline-block; }
 
 .event-description,
 .method-description {
